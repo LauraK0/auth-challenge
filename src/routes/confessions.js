@@ -42,18 +42,14 @@ function get(req, res) {
 }
 
 function post(req, res) {
-  /**
-   * Currently any user can POST to any other user's confessions (this is bad!)
-   * We can't rely on the URL params. We can only trust the cookie.
-   * [1] Get the session ID from the cookie
-   * [2] Get the session from the DB
-   * [3] Get the logged in user's ID from the session
-   * [4] Use the user ID to create the confession in the DB
-   * [5] Redirect back to the logged in user's confession page
-   */
-  const current_user = Number(req.params.user_id);
-  createConfession(req.body.content, current_user);
-  res.redirect(`/confessions/${current_user}`);
+  const sid = req.signedCookies.sid; // [1] Get the session ID from the cookie
+  const session = getSession(sid); // [2] Get the session from the DB
+  const current_user = session && session.user_id; // [3] Get the logged in user's ID from the session
+  if (!req.body.content || !current_user) {
+    return res.status(401).send("You are not authorized to view this page");
+  }
+  createConfession(req.body.content, current_user); // [4] Use the user ID to create the confession in the DB
+  res.redirect(`/confessions/${current_user}`); // [5] Redirect back to the logged in user's confession page
 }
 
 module.exports = { get, post };
