@@ -1,9 +1,15 @@
 const db = require("../database/db.js");
+const crypto = require("crypto");
 
-const insert_session = db.prepare(`SELECT 1`);
+const insert_session = db.prepare(/*sql*/ `
+  INSERT INTO sessions (id, user_id, expires_at)
+  VALUES ($id, $user_id, datetime('now', '+1 day'))
+  `);
 
 function createSession(user_id) {
-  // to-do
+  const id = crypto.randomBytes(18).toString("base64");
+  insert_session.run({ id, user_id });
+  return id;
 }
 
 const select_session = db.prepare(`
