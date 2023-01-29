@@ -2,6 +2,7 @@ const {
   listConfessions,
   createConfession,
 } = require("../model/confessions.js");
+// const { getSession } = require("../model/sessions.js");
 const { Layout } = require("../templates.js");
 
 function get(req, res) {
