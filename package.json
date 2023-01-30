@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node src/index.js",
-    "dev": "DB_FILE=db.sqlite COOKIE_SECRET=abc nodemon src/index.js",
+    "dev": "DB_FILE=db.sqlite COOKIE_SECRET=abc nodemon solution/index.js",
     "seed": "DB_FILE=db.sqlite node src/database/seed.js",
     "test:1": "DB_FILE=test.sqlite COOKIE_SECRET=abc node --no-warnings test/1.test.js",
     "test:2": "DB_FILE=test.sqlite COOKIE_SECRET=abc node --no-warnings test/2.test.js",
